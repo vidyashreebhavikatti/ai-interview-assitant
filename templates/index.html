@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>InterviewAI</title>
+</head>
+<body>
+
+<h2>AI Interview Assistant</h2>
+
+<textarea id="question" placeholder="Enter question"></textarea><br><br>
+<textarea id="code" placeholder="Paste your code"></textarea><br><br>
+
+<button onclick="analyze()">Analyze</button>
+<p id="loading" style="display:none;">⏳ Analyzing...</p>
+
+<pre id="result"></pre>
+
+<script>
+async function analyze() {
+    const question = document.getElementById("question").value;
+    const code = document.getElementById("code").value;
+
+    const res = await fetch("/analyze", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({question, code})
+    });
+
+    const data = await res.json();
+    document.getElementById("result").innerText = `
+    Approach:
+    ${data.approach}
+
+    Mistakes:
+    ${data.mistakes}
+
+    Optimization:
+    ${data.optimization}
+
+    Complexity:
+    ${data.complexity}
+    `;
+}
+</script>
+
+</body>
+</html>
